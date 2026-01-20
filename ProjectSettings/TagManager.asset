@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Tilemap
+  - Zombie
   layers:
   - Default
   - TransparentFX
