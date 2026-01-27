@@ -3,14 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class PlayerLife : MonoBehaviour
 {
-    [Header("Health")]
     public int maxHealth = 5;
     private int currentHealth;
-
-    [Header("Damage Cooldown")]
     public float damageCooldown = 1f;
     private bool canTakeDamage = true;
-
     private bool isDead = false;
 
     void Start()
@@ -19,11 +15,11 @@ public class PlayerLife : MonoBehaviour
         UIHearts.instance.UpdateHearts(currentHealth);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDead) return;
 
-        if (collision.CompareTag("Zombie") && canTakeDamage)
+        if (collision.gameObject.CompareTag("Zombie") && canTakeDamage)
         {
             TakeDamage(1);
         }
@@ -34,14 +30,8 @@ public class PlayerLife : MonoBehaviour
         currentHealth -= damage;
         UIHearts.instance.UpdateHearts(currentHealth);
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-        else
-        {
-            StartCoroutine(DamageCooldown());
-        }
+        if (currentHealth <= 0) Die();
+        else StartCoroutine(DamageCooldown());
     }
 
     System.Collections.IEnumerator DamageCooldown()
