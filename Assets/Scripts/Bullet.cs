@@ -1,29 +1,36 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10f;
+    public float speed = 12f;
     public int damage = 1;
-    public float lifeTime = 3f;
+    public float lifeTime = 2f;
 
-    private Vector2 direction;
+    private Rigidbody2D rb;
 
-    public void SetDirection(Vector2 dir)
+    void Awake()
     {
-        direction = dir.normalized;
-        Destroy(gameObject, lifeTime);
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void Start()
     {
-        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+        rb.linearVelocity = transform.right * speed;
+
+        Destroy(gameObject, lifeTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Zombie"))
         {
-            other.GetComponent<ZombieHealth>()?.TakeDamage(damage);
+            ZombieHealth zombie = other.GetComponent<ZombieHealth>();
+            if (zombie != null)
+            {
+                zombie.TakeDamage(damage);
+            }
+
             Destroy(gameObject);
         }
     }

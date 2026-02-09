@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class ZombieHealth : MonoBehaviour
 {
-    public int maxHP = 2;
+    public int maxHP = 3;
     private int currentHP;
+
+    [Header("Drop")]
+    public GameObject expPrefab;
+    public int expPerZombie = 2;
+    public float spawnRadius = 0.3f; 
 
     void Start()
     {
@@ -13,13 +18,24 @@ public class ZombieHealth : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         currentHP -= dmg;
-
         if (currentHP <= 0)
             Die();
     }
 
     void Die()
     {
+        if (expPrefab != null)
+        {
+            for (int i = 0; i < expPerZombie; i++)
+            {
+                Vector2 offset = Random.insideUnitCircle * spawnRadius;
+                Vector3 spawnPos = transform.position + new Vector3(offset.x, offset.y, 0);
+
+                GameObject exp = Instantiate(expPrefab, spawnPos, Quaternion.identity);
+                exp.GetComponent<ExpPickup>().expAmount = 1;
+            }
+        }
+
         Destroy(gameObject);
     }
 }

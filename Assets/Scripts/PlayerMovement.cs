@@ -5,25 +5,22 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5f;
+
     private Rigidbody2D rb;
     private Animator animator;
-    private SpriteRenderer spriteRenderer;
     private Vector2 move;
 
-    private bool isKnocked = false;
+    private bool isKnocked;
     private Vector2 knockbackVelocity;
     public float knockbackPower = 6f;
     public float knockbackDuration = 0.15f;
-
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;
-
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -36,61 +33,43 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current.aKey.isPressed) move.x -= 1;
         if (Keyboard.current.dKey.isPressed) move.x += 1;
 
-        bool isMoving = move.sqrMagnitude > 0.01f;
-        animator.SetBool("IsMoving", isMoving);
+        animator.SetBool("IsMoving", move.sqrMagnitude > 0.01f);
 
-        if (move.x > 0.01f) spriteRenderer.flipX = false;
-        else if (move.x < -0.01f) spriteRenderer.flipX = true;
+        if (move.x > 0.01f)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (move.x < -0.01f)
+            transform.localScale = new Vector3(-1, 1, 1);
     }
 
     void FixedUpdate()
     {
         if (isKnocked)
         {
-            rb.MovePosition(
-                rb.position + knockbackVelocity * Time.fixedDeltaTime
-            );
+            rb.MovePosition(rb.position + knockbackVelocity * Time.fixedDeltaTime);
             return;
         }
 
         if (move.sqrMagnitude > 0.01f)
         {
-            Vector2 newPos =
-                rb.position + move.normalized * speed * Time.fixedDeltaTime;
-
-            rb.MovePosition(newPos);
+            rb.MovePosition(rb.position + move.normalized * speed * Time.fixedDeltaTime);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Krock");
         if (collision.gameObject.CompareTag("Zombie"))
         {
-            Debug.Log("Player hit by enemy!");
-            Knockback(collision);    
+            Vector2 dir = (rb.position - (Vector2)collision.transform.position).normalized;
+            knockbackVelocity = dir * knockbackPower;
+            StopAllCoroutines();
+            StartCoroutine(KnockbackRoutine());
         }
-    }
-
-    void Knockback(Collision2D collision)
-    {
-        Vector2 dir =
-            (rb.position - (Vector2)collision.transform.position).normalized;
-
-        knockbackVelocity = dir * knockbackPower;
-
-        StopAllCoroutines();
-        StartCoroutine(KnockbackRoutine());
     }
 
     System.Collections.IEnumerator KnockbackRoutine()
     {
         isKnocked = true;
-
         yield return new WaitForSeconds(knockbackDuration);
-
         isKnocked = false;
     }
-
-
 }
