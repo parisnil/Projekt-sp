@@ -52,4 +52,16 @@ public class PlayerLife : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+    public void Heal(int amount)
+    {
+        if (isDead) return;
+
+        currentHealth += amount;
+
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+
+        UIHearts.instance.UpdateHearts(currentHealth);
+    }
+
 }

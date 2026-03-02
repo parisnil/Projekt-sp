@@ -18,6 +18,7 @@ public class LootBox : MonoBehaviour
     void Open()
     {
         opened = true;
+        Debug.Log("OpenLootBox");
         int index = Random.Range(0, possibleBagItems.Length);
         Instantiate(possibleBagItems[index], spawnPoint.position, Quaternion.identity);
         Destroy(gameObject);

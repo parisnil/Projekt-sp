@@ -8,6 +8,7 @@ public class BagUI : MonoBehaviour
 
     public void AddIcon(Sprite sprite)
     {
+        Debug.Log("AddIcon");
         GameObject icon = Instantiate(iconPrefab, slotParent);
         icon.GetComponent<Image>().sprite = sprite;
     }
