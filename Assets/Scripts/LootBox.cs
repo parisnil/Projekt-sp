@@ -6,6 +6,13 @@ public class LootBox : MonoBehaviour
     public Transform spawnPoint;
     private bool opened = false;
 
+    private Animator animator;
+
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (opened) return;
@@ -18,9 +25,22 @@ public class LootBox : MonoBehaviour
     void Open()
     {
         opened = true;
-        Debug.Log("OpenLootBox");
+
+        if (animator != null)
+        {
+            animator.SetTrigger("OpenLootBox");
+        }
+
+        StartCoroutine(SpawnLootWithDelay(0.3f));
+    }
+
+    System.Collections.IEnumerator SpawnLootWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
         int index = Random.Range(0, possibleBagItems.Length);
         Instantiate(possibleBagItems[index], spawnPoint.position, Quaternion.identity);
-        Destroy(gameObject);
+
+        Destroy(gameObject); 
     }
 }
