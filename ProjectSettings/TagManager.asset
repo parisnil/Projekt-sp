@@ -8,6 +8,9 @@ TagManager:
   - Zombie
   - Bullet
   - Exp
+  - Magnet
+  - Health
+  - LootBox
   layers:
   - Default
   - TransparentFX
