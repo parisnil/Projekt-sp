@@ -1,55 +1,49 @@
 using UnityEngine;
+using System.Collections;
 
 public class ZombieSpawnManager : MonoBehaviour
 {
     [Header("Zombie Prefabs")]
-    public GameObject normalZombiePrefab;
-    public GameObject strongZombiePrefab;
+    public GameObject[] zombiePrefabs; 
 
     [Header("Spawn Settings")]
-    public float initialSpawnInterval = 5f;   
-    public float minSpawnInterval = 1.5f;    
-    public float spawnAcceleration = 0.05f;   
-    public int startStrongAfter = 20;   
-    public int fullStrongAt = 50;   
-
-    [Header("Map Area")]
+    public float spawnInterval = 0.5f;
     public float minX, maxX, minY, maxY;
 
-    private int totalZombiesSpawned = 0;
-    private float currentSpawnInterval;
+    private bool waveActive = false;
 
-    void Start()
+    public void StartWave(int level, int zombiesToSpawn)
     {
-        currentSpawnInterval = initialSpawnInterval;
-        Invoke(nameof(SpawnZombie), currentSpawnInterval);
+        if (waveActive) return;
+        StartCoroutine(SpawnWave(level, zombiesToSpawn));
     }
 
-    void SpawnZombie()
+    private IEnumerator SpawnWave(int level, int zombiesToSpawn)
     {
-        GameObject prefabToSpawn = normalZombiePrefab;
+        waveActive = true;
 
-        if (totalZombiesSpawned >= startStrongAfter)
+        int index = Mathf.Clamp(level - 1, 0, zombiePrefabs.Length - 1);
+        GameObject prefabToSpawn = zombiePrefabs[index];
+
+        for (int i = 0; i < zombiesToSpawn; i++)
         {
-            float strongChance = Mathf.Clamp01((float)(totalZombiesSpawned - startStrongAfter) / (fullStrongAt - startStrongAfter));
+            Vector2 spawnPos = new Vector2(
+                Random.Range(minX, maxX),
+                Random.Range(minY, maxY)
+            );
 
-            if (Random.value < strongChance)
-            {
-                prefabToSpawn = strongZombiePrefab;
-            }
+            Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
+
+            yield return new WaitForSeconds(spawnInterval);
         }
 
-        Vector2 spawnPos = new Vector2(
-            Random.Range(minX, maxX),
-            Random.Range(minY, maxY)
-        );
+        while (GameObject.FindGameObjectsWithTag("Zombie").Length > 0)
+        {
+            yield return null;
+        }
 
-        Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
+        waveActive = false;
 
-        totalZombiesSpawned++;
-
-        currentSpawnInterval = Mathf.Max(minSpawnInterval, currentSpawnInterval - spawnAcceleration);
-
-        Invoke(nameof(SpawnZombie), currentSpawnInterval);
+        GameManager.instance.NextWave();
     }
 }
