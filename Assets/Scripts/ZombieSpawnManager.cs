@@ -4,46 +4,90 @@ using System.Collections;
 public class ZombieSpawnManager : MonoBehaviour
 {
     [Header("Zombie Prefabs")]
-    public GameObject[] zombiePrefabs; 
+    public GameObject[] zombiePrefabs;
 
     [Header("Spawn Settings")]
     public float spawnInterval = 0.5f;
-    public float minX, maxX, minY, maxY;
 
-    private bool waveActive = false;
+    private int zombiesToSpawn;
+    private int zombiesAlive;
+    private bool waveActive;
 
-    public void StartWave(int level, int zombiesToSpawn)
+    public void StartWave(int level, int amount)
     {
-        if (waveActive) return;
-        StartCoroutine(SpawnWave(level, zombiesToSpawn));
-    }
+        StopAllCoroutines();
 
-    private IEnumerator SpawnWave(int level, int zombiesToSpawn)
-    {
+        zombiesToSpawn = amount;
+        zombiesAlive = amount;
         waveActive = true;
 
-        int index = Mathf.Clamp(level - 1, 0, zombiePrefabs.Length - 1);
-        GameObject prefabToSpawn = zombiePrefabs[index];
+        StartCoroutine(SpawnWave(level));
+    }
 
+    IEnumerator SpawnWave(int level)
+    {
         for (int i = 0; i < zombiesToSpawn; i++)
         {
-            Vector2 spawnPos = new Vector2(
-                Random.Range(minX, maxX),
-                Random.Range(minY, maxY)
-            );
+            int index = Mathf.Clamp(level - 1, 0, zombiePrefabs.Length - 1);
+            GameObject prefab = zombiePrefabs[index];
 
-            Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
+            Vector2 spawnPos = GetSpawnOutsideCamera();
+
+            Instantiate(prefab, spawnPos, Quaternion.identity);
 
             yield return new WaitForSeconds(spawnInterval);
         }
+    }
 
-        while (GameObject.FindGameObjectsWithTag("Zombie").Length > 0)
+    public void ZombieDied()
+    {
+        zombiesAlive--;
+
+        if (zombiesAlive <= 0 && waveActive)
         {
-            yield return null;
+            waveActive = false;
+            GameManager.instance.NextWave();
         }
+    }
 
-        waveActive = false;
+    Vector2 GetSpawnOutsideCamera()
+    {
+        Camera cam = Camera.main;
 
-        GameManager.instance.NextWave();
+        float height = 2f * cam.orthographicSize;
+        float width = height * cam.aspect;
+
+        Vector2 camPos = cam.transform.position;
+
+        float spawnDistance = 2f;
+
+        int side = Random.Range(0, 4);
+
+        switch (side)
+        {
+            case 0: 
+                return new Vector2(
+                    camPos.x - width / 2 - spawnDistance,
+                    Random.Range(camPos.y - height / 2, camPos.y + height / 2)
+                );
+
+            case 1:
+                return new Vector2(
+                    camPos.x + width / 2 + spawnDistance,
+                    Random.Range(camPos.y - height / 2, camPos.y + height / 2)
+                );
+
+            case 2:
+                return new Vector2(
+                    Random.Range(camPos.x - width / 2, camPos.x + width / 2),
+                    camPos.y + height / 2 + spawnDistance
+                );
+
+            default: 
+                return new Vector2(
+                    Random.Range(camPos.x - width / 2, camPos.x + width / 2),
+                    camPos.y - height / 2 - spawnDistance
+                );
+        }
     }
 }

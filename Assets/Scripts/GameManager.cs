@@ -7,10 +7,13 @@ public class GameManager : MonoBehaviour
 
     [Header("Wave Settings")]
     public int currentLevel = 1;
-    public int zombiesToNextLevel = 10;
-    public float pauseTime = 2f;
+    public int zombiesToNextLevel = 20;
+    public float pauseTime = 10f;
 
     public ZombieSpawnManager spawnManager;
+
+    [Header("Upgrade UI")]
+    public GameObject upgradePanel;
 
     void Awake()
     {
@@ -32,15 +35,32 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Wave klar! Level " + currentLevel);
 
-        Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(pauseTime);
-        Time.timeScale = 1f;
+        spawnManager.StopAllCoroutines();
+
+        if (upgradePanel != null)
+            upgradePanel.SetActive(true);
+
+        yield return new WaitForSeconds(pauseTime);
+
+        if (upgradePanel != null)
+            upgradePanel.SetActive(false);
 
         currentLevel++;
-        zombiesToNextLevel += 5;
+        zombiesToNextLevel = 20;
+
+        SpriteCounter counter = FindFirstObjectByType<SpriteCounter>();
+        if (counter != null)
+            counter.ResetCount(zombiesToNextLevel);
 
         spawnManager.StartWave(currentLevel, zombiesToNextLevel);
 
         Debug.Log("Level " + currentLevel + " startar!");
+    }
+
+    public void ZombieKilled()
+    {
+        SpriteCounter counter = FindFirstObjectByType<SpriteCounter>();
+        if (counter != null)
+            counter.AddCount();
     }
 }

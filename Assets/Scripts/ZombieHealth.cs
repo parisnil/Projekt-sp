@@ -36,6 +36,15 @@ public class ZombieHealth : MonoBehaviour
             }
         }
 
+        GameManager.instance.ZombieKilled();
+
+        ZombieSpawnManager spawner = FindFirstObjectByType<ZombieSpawnManager>();
+        if (spawner != null)
+        {
+            spawner.ZombieDied();
+        }
+
         Destroy(gameObject);
     }
+
 }

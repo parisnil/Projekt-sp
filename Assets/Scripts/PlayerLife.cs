@@ -64,4 +64,12 @@ public class PlayerLife : MonoBehaviour
         UIHearts.instance.UpdateHearts(currentHealth);
     }
 
+    public void AddMaxHP(int amount)
+    {
+        maxHealth += amount;
+        currentHealth += amount;
+
+        UIHearts.instance.UpdateHearts(currentHealth);
+    }
+
 }

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5f;
+    public float baseSpeed = 5f; 
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -51,7 +51,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (move.sqrMagnitude > 0.01f)
         {
-            rb.MovePosition(rb.position + move.normalized * speed * Time.fixedDeltaTime);
+            float finalSpeed = baseSpeed;
+
+            if (UpgradeManager.instance != null)
+            {
+                finalSpeed *= UpgradeManager.instance.speedMultiplier;
+            }
+
+            rb.MovePosition(rb.position + move.normalized * finalSpeed * Time.fixedDeltaTime);
         }
     }
 
