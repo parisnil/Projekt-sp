@@ -7,33 +7,44 @@ public class GameManager : MonoBehaviour
 
     [Header("Wave Settings")]
     public int currentLevel = 1;
-    public int zombiesToNextLevel = 20;
+    public int zombiesToNextWave = 20;
     public float pauseTime = 10f;
 
+    [Header("References")]
     public ZombieSpawnManager spawnManager;
-
-    [Header("Upgrade UI")]
     public GameObject upgradePanel;
+
+    private bool waitingForWave = false;
 
     void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        instance = this;
     }
 
     void Start()
     {
-        spawnManager.StartWave(currentLevel, zombiesToNextLevel);
+        StartWave();
+    }
+
+    void StartWave()
+    {
+        spawnManager.StartWave(currentLevel, zombiesToNextWave);
+    }
+
+    public void ZombieKilled()
+    {
+        FindFirstObjectByType<SpriteCounter>()?.AddCount();
     }
 
     public void NextWave()
     {
-        StartCoroutine(LevelUpRoutine());
+        if (waitingForWave) return;
+        StartCoroutine(WaveRoutine());
     }
 
-    private IEnumerator LevelUpRoutine()
+    IEnumerator WaveRoutine()
     {
-        Debug.Log("Wave klar! Level " + currentLevel);
+        waitingForWave = true;
 
         spawnManager.StopAllCoroutines();
 
@@ -45,22 +56,15 @@ public class GameManager : MonoBehaviour
         if (upgradePanel != null)
             upgradePanel.SetActive(false);
 
+        FindFirstObjectByType<UpgradeManager>()?.ResetChoices();
+
         currentLevel++;
-        zombiesToNextLevel = 20;
+        zombiesToNextWave = 20;
 
-        SpriteCounter counter = FindFirstObjectByType<SpriteCounter>();
-        if (counter != null)
-            counter.ResetCount(zombiesToNextLevel);
+        FindFirstObjectByType<SpriteCounter>()?.ResetCount(zombiesToNextWave);
 
-        spawnManager.StartWave(currentLevel, zombiesToNextLevel);
+        waitingForWave = false;
 
-        Debug.Log("Level " + currentLevel + " startar!");
-    }
-
-    public void ZombieKilled()
-    {
-        SpriteCounter counter = FindFirstObjectByType<SpriteCounter>();
-        if (counter != null)
-            counter.AddCount();
+        StartWave();
     }
 }

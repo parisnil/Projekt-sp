@@ -195,10 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf332bdda9aa7d46ad30fb29f69efb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieHealth
-  maxHP: 5
+  maxHP: 3
   expPrefab: {fileID: 896288821845894611, guid: 3e617e717593f264a8a54dd27adf88e8, type: 3}
   expPerZombie: 3
-  spawnRadius: 0.3
+  spawnRadius: 0.5
 --- !u!95 &7579841453960151804
 Animator:
   serializedVersion: 7

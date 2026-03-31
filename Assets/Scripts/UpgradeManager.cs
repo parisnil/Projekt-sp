@@ -2,36 +2,51 @@ using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
 {
-    public static UpgradeManager instance;
+    public GameObject upgradePanel;
 
-    public float damageMultiplier = 1f;
-    public float speedMultiplier = 1f;
-    public int hpBonus = 0;
-
-    void Awake()
-    {
-        instance = this;
-    }
+    private bool choiceMade = false;
 
     public void UpgradeDamage()
     {
-        damageMultiplier *= 1.5f;
+        if (choiceMade) return;
+
+        choiceMade = true;
+
+        PlayerStats.damageMultiplier *= 1.5f;
+        CloseUI();
     }
 
     public void UpgradeSpeed()
     {
-        speedMultiplier *= 1.1f;
+        if (choiceMade) return;
+
+        choiceMade = true;
+
+        PlayerStats.speedMultiplier *= 1.1f;
+        CloseUI();
     }
 
     public void UpgradeHP()
     {
-        hpBonus += 1;
+        if (choiceMade) return;
+
+        choiceMade = true;
+
+        PlayerLife player = FindFirstObjectByType<PlayerLife>();
+        if (player != null)
+            player.AddMaxHP(1);
+
+        CloseUI();
     }
 
-    public void CloseUpgradeUI()
+    void CloseUI()
     {
-        GameObject panel = GameObject.Find("UpgradePanel");
-        if (panel != null)
-            panel.SetActive(false);
+        if (upgradePanel != null)
+            upgradePanel.SetActive(false);
+    }
+
+    public void ResetChoices()
+    {
+        choiceMade = false;
     }
 }
