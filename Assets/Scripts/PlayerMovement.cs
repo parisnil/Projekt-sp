@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isKnocked;
     private Vector2 knockbackVelocity;
+
     public float knockbackPower = 6f;
     public float knockbackDuration = 0.15f;
 
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;
+
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -28,12 +30,14 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current == null) return;
 
         move = Vector2.zero;
+
         if (Keyboard.current.wKey.isPressed) move.y += 1;
         if (Keyboard.current.sKey.isPressed) move.y -= 1;
         if (Keyboard.current.aKey.isPressed) move.x -= 1;
         if (Keyboard.current.dKey.isPressed) move.x += 1;
 
-        animator.SetBool("IsMoving", move.sqrMagnitude > 0.01f);
+        if (animator != null)
+            animator.SetBool("IsMoving", move.sqrMagnitude > 0.01f);
 
         if (move.x > 0.01f)
             transform.localScale = new Vector3(1, 1, 1);
@@ -51,9 +55,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (move.sqrMagnitude > 0.01f)
         {
-            float finalSpeed = baseSpeed * PlayerStats.speedMultiplier;
+            float speed = baseSpeed;
 
-            rb.MovePosition(rb.position + move.normalized * finalSpeed * Time.fixedDeltaTime);
+            if (PlayerStats.speedMultiplier > 0)
+                speed *= PlayerStats.speedMultiplier;
+
+            rb.MovePosition(rb.position + move.normalized * speed * Time.fixedDeltaTime);
         }
     }
 
@@ -63,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector2 dir = (rb.position - (Vector2)collision.transform.position).normalized;
             knockbackVelocity = dir * knockbackPower;
+
             StopAllCoroutines();
             StartCoroutine(KnockbackRoutine());
         }
@@ -75,4 +83,3 @@ public class PlayerMovement : MonoBehaviour
         isKnocked = false;
     }
 }
-

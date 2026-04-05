@@ -9,6 +9,6 @@ public class PlayerInventory : MonoBehaviour
     public void AddItem(BagItem item)
     {
         items.Add(item);
-        bagUI.AddIcon(item.icon);
+        bagUI.AddIcon(item.icon, item.weaponPrefab);
     }
 }

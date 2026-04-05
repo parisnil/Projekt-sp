@@ -15,6 +15,7 @@ public class LootBox : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Trigger händer");
         if (opened) return;
         if (other.CompareTag("Player"))
         {

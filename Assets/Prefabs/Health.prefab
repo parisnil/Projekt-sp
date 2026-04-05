@@ -152,3 +152,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BagItem
   type: 4
   icon: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  weaponPrefab: {fileID: 0}

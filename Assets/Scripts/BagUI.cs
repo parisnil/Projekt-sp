@@ -6,17 +6,27 @@ public class BagUI : MonoBehaviour
     public Transform slotParent;
     public GameObject iconPrefab;
 
-    public void AddIcon(Sprite sprite)
+    public void AddIcon(Sprite sprite, GameObject weaponPrefab)
     {
         GameObject icon = Instantiate(iconPrefab, slotParent);
+
         Image img = icon.GetComponent<Image>();
         img.sprite = sprite;
 
-        RectTransform rt = icon.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(100, 100);
-        rt.localScale = Vector3.one;
-        rt.localPosition = Vector3.zero;
+        Button btn = icon.GetComponent<Button>();
 
-        img.color = Color.white; 
+        btn.onClick.AddListener(() =>
+        {
+            WeaponManager wm = FindFirstObjectByType<WeaponManager>();
+
+            if (wm != null && weaponPrefab != null)
+            {
+                wm.EquipWeapon(weaponPrefab);
+            }
+            else
+            {
+                Debug.LogError("WeaponManager eller weaponPrefab är NULL");
+            }
+        });
     }
 }

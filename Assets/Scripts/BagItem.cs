@@ -12,7 +12,9 @@ public enum BagItemType
 public class BagItem : MonoBehaviour
 {
     public BagItemType type;
-    public Sprite icon; 
+    public Sprite icon;
+
+    public GameObject weaponPrefab;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -27,3 +29,4 @@ public class BagItem : MonoBehaviour
         Destroy(gameObject);
     }
 }
+
