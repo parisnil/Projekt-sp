@@ -6,27 +6,47 @@ public class BagUI : MonoBehaviour
     public Transform slotParent;
     public GameObject iconPrefab;
 
-    public void AddIcon(Sprite sprite, GameObject weaponPrefab)
+    public void AddIcon(BagItem item)
     {
         GameObject icon = Instantiate(iconPrefab, slotParent);
 
         Image img = icon.GetComponent<Image>();
-        img.sprite = sprite;
+        img.sprite = item.icon;
 
         Button btn = icon.GetComponent<Button>();
 
         btn.onClick.AddListener(() =>
         {
-            WeaponManager wm = FindFirstObjectByType<WeaponManager>();
-
-            if (wm != null && weaponPrefab != null)
-            {
-                wm.EquipWeapon(weaponPrefab);
-            }
-            else
-            {
-                Debug.LogError("WeaponManager eller weaponPrefab är NULL");
-            }
+            UseItem(item);
+            Destroy(icon);
         });
     }
+
+    void UseItem(BagItem item)
+    {
+        if (item.type == BagItemType.Weapon)
+        {
+            WeaponManager wm = FindFirstObjectByType<WeaponManager>();
+
+            if (wm != null && item.weaponPrefab != null)
+            {
+                wm.EquipWeapon(item.weaponPrefab);
+            }
+        }
+        else if (item.type == BagItemType.Bomb)
+        {
+            PlayerBomb bomb = FindFirstObjectByType<PlayerBomb>();
+
+            if (bomb != null)
+                bomb.Explode();
+        }
+        else if (item.type == BagItemType.Speed)
+        {
+            PlayerSpeed speed = FindFirstObjectByType<PlayerSpeed>();
+
+            if (speed != null)
+                speed.ActivateSpeedBoost();
+        }
+    }
 }
+

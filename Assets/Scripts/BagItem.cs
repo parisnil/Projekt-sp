@@ -5,8 +5,6 @@ public enum BagItemType
     Weapon,
     Bomb,
     Speed,
-    Ammo,
-    Health
 }
 
 public class BagItem : MonoBehaviour

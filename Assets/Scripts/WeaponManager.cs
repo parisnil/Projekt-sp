@@ -28,7 +28,7 @@ public class WeaponManager : MonoBehaviour
         }
 
         currentWeapon = Instantiate(weaponPrefab, gunHolder);
-        currentWeapon.transform.localPosition = new Vector3(0.483f,-0.158f,0f);
+        currentWeapon.transform.localPosition = Vector3.zero;
         currentWeapon.transform.localRotation = Quaternion.identity;
 
         Debug.Log("Weapon spawned: " + currentWeapon.name);
