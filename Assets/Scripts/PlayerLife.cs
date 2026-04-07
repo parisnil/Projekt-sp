@@ -1,10 +1,10 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerLife : MonoBehaviour
 {
     public int maxHealth = 5;
     private int currentHealth;
+
     public float damageCooldown = 1f;
     private bool canTakeDamage = true;
     private bool isDead = false;
@@ -30,8 +30,14 @@ public class PlayerLife : MonoBehaviour
         currentHealth -= damage;
         UIHearts.instance.UpdateHearts(currentHealth);
 
-        if (currentHealth <= 0) Die();
-        else StartCoroutine(DamageCooldown());
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(DamageCooldown());
+        }
     }
 
     System.Collections.IEnumerator DamageCooldown()
@@ -44,14 +50,18 @@ public class PlayerLife : MonoBehaviour
     void Die()
     {
         isDead = true;
-        StartCoroutine(RestartLevel());
+
+        PlayerExperience xp = FindFirstObjectByType<PlayerExperience>();
+        if (xp != null)
+            xp.SaveExp();
+
+        DeathScreenUI deathUI = FindFirstObjectByType<DeathScreenUI>();
+        if (deathUI != null)
+            deathUI.Show();
+
+        FindFirstObjectByType<PlayerInventory>()?.ResetRun();
     }
 
-    System.Collections.IEnumerator RestartLevel()
-    {
-        yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
     public void Heal(int amount)
     {
         if (isDead) return;
@@ -71,5 +81,4 @@ public class PlayerLife : MonoBehaviour
 
         UIHearts.instance.UpdateHearts(currentHealth);
     }
-
 }
