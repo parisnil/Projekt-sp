@@ -3,41 +3,26 @@ using System.Collections.Generic;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [Header("Run items (bara i denna match)")]
     public List<BagItem> items = new();
+    public static List<BagItem> pendingItems = new();
 
     public BagUI bagUI;
 
-    [Header("Owned items (från shop - koppla i Inspector)")]
-    public BagItem gun1;
-    public BagItem gun2;
-    public BagItem bomb;
-    public BagItem speed;
-
     void Start()
     {
-        StartRun();
+        LoadRunItems();
     }
 
-    public void StartRun()
+    void LoadRunItems()
     {
-        ResetRun();
-        LoadOwnedItems();
-    }
+        items.Clear();
 
-    void LoadOwnedItems()
-    {
-        if (PlayerPrefs.GetInt("gun1", 0) == 1)
-            AddItem(gun1);
+        foreach (BagItem item in pendingItems)
+        {
+            AddItem(item);
+        }
 
-        if (PlayerPrefs.GetInt("gun2", 0) == 1)
-            AddItem(gun2);
-
-        if (PlayerPrefs.GetInt("bomb", 0) == 1)
-            AddItem(bomb);
-
-        if (PlayerPrefs.GetInt("speed", 0) == 1)
-            AddItem(speed);
+        pendingItems.Clear();
     }
 
     public void AddItem(BagItem item)
@@ -52,12 +37,10 @@ public class PlayerInventory : MonoBehaviour
     {
         items.Clear();
 
-        if (bagUI != null && bagUI.slotParent != null)
+        foreach (Transform child in bagUI.slotParent)
         {
-            for (int i = bagUI.slotParent.childCount - 1; i >= 0; i--)
-            {
-                Destroy(bagUI.slotParent.GetChild(i).gameObject);
-            }
+            Destroy(child.gameObject);
         }
     }
 }
+

@@ -4,18 +4,28 @@ using UnityEngine;
 public class ExpUI : MonoBehaviour
 {
     public PlayerExperience playerExp;
-    private TMP_Text expText;
+    private TMP_Text text;
 
     void Awake()
     {
-        expText = GetComponent<TMP_Text>();
+        text = GetComponent<TMP_Text>();
+    }
+
+    void Start()
+    {
+        Refresh();
     }
 
     void Update()
     {
+        Refresh();
+    }
+
+    void Refresh()
+    {
         if (playerExp != null)
         {
-            expText.text = "EXP: " + playerExp.currentExp;
+            text.text = "EXP: " + playerExp.currentExp;
         }
     }
 }

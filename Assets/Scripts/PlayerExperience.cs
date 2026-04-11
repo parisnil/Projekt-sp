@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerExperience : MonoBehaviour
 {
-    public int currentExp = 0;
+    public int currentExp;
 
     void Start()
     {
@@ -12,7 +12,14 @@ public class PlayerExperience : MonoBehaviour
     public void AddExp(int amount)
     {
         currentExp += amount;
-        Debug.Log("EXP: " + currentExp);
+        SaveExp();
+    }
+
+    public void SpendExp(int amount)
+    {
+        currentExp -= amount;
+        if (currentExp < 0) currentExp = 0;
+        SaveExp();
     }
 
     public void SaveExp()

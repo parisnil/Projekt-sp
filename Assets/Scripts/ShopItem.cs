@@ -4,20 +4,38 @@ using TMPro;
 
 public class ShopItem : MonoBehaviour
 {
-    public string itemID;        
+    public BagItem item;
+    public int price;
+
     public Button buyButton;
     public TMP_Text buttonText;
 
-    private bool bought = false;
+    bool bought = false;
+
+    void Start()
+    {
+        buttonText.text = price + " XP";
+    }
 
     public void Buy()
     {
         if (bought) return;
 
-        PlayerPrefs.SetInt(itemID, 1);
+        int xp = PlayerPrefs.GetInt("RunXP", 0);
+
+        if (xp < price)
+        {
+            buttonText.text = "NOT ENOUGH EXP";
+            return;
+        }
+
+        xp -= price;
+        PlayerPrefs.SetInt("RunXP", xp);
+
+        PlayerInventory.pendingItems.Add(item);
 
         bought = true;
-        buttonText.text = "OWNED";
+        buttonText.text = "BOUGHT";
         buyButton.interactable = false;
     }
 }

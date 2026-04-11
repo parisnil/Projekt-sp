@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public int currentLevel = 1;
     public int zombiesToNextWave = 20;
     public float pauseTime = 10f;
+    public int maxWaves = 3;
 
     [Header("References")]
     public ZombieSpawnManager spawnManager;
@@ -39,7 +40,21 @@ public class GameManager : MonoBehaviour
     public void NextWave()
     {
         if (waitingForWave) return;
+
+        if (currentLevel > maxWaves)
+        {
+            WinGame();
+            return;
+        }
+
         StartCoroutine(WaveRoutine());
+    }
+
+    void WinGame()
+    {
+        Debug.Log("YOU WIN!");
+
+        FindFirstObjectByType<VictoryScreenUI>()?.Show();
     }
 
     IEnumerator WaveRoutine()

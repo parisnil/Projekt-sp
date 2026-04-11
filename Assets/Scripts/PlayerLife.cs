@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerLife : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class PlayerLife : MonoBehaviour
     public float damageCooldown = 1f;
     private bool canTakeDamage = true;
     private bool isDead = false;
+    public DeathScreenUI deathUI;
 
     void Start()
     {
@@ -53,13 +56,17 @@ public class PlayerLife : MonoBehaviour
 
         PlayerExperience xp = FindFirstObjectByType<PlayerExperience>();
         if (xp != null)
+        {
             xp.SaveExp();
+            Debug.Log("XP SAVED: " + xp.currentExp);
+        }
 
-        DeathScreenUI deathUI = FindFirstObjectByType<DeathScreenUI>();
+        FindFirstObjectByType<PlayerInventory>()?.ResetRun();
+
         if (deathUI != null)
             deathUI.Show();
 
-        FindFirstObjectByType<PlayerInventory>()?.ResetRun();
+        Time.timeScale = 0f;
     }
 
     public void Heal(int amount)

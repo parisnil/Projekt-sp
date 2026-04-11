@@ -6,15 +6,13 @@ public class ExpPickup : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            PlayerExperience playerExp = other.GetComponent<PlayerExperience>();
-            if (playerExp != null)
-            {
-                playerExp.AddExp(expAmount);
-            }
+        if (!other.CompareTag("Player")) return;
 
-            Destroy(gameObject);
-        }
+        PlayerExperience xp = FindFirstObjectByType<PlayerExperience>();
+
+        if (xp != null)
+            xp.AddExp(expAmount);
+
+        Destroy(gameObject);
     }
 }

@@ -251,7 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0666fcaf02d23bc4b84414a05e0cb9d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  itemID: speed
+  item: {fileID: 4930205939391244804, guid: f452e2d7f6039d3419aaea90c7659948, type: 3}
+  price: 70
   buyButton: {fileID: 706360974}
   buttonText: {fileID: 2087366610}
 --- !u!114 &88420391
@@ -898,6 +899,7 @@ GameObject:
   - component: {fileID: 384444248}
   - component: {fileID: 384444247}
   - component: {fileID: 384444246}
+  - component: {fileID: 384444249}
   m_Layer: 5
   m_Name: XPtext
   m_TagString: Untagged
@@ -1023,6 +1025,19 @@ RectTransform:
   m_AnchoredPosition: {x: 200, y: -100}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &384444249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384444245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417ec318b1f34ab48a479b557f8c7504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuXP
+  xpText: {fileID: 384444246}
 --- !u!1 &504559328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,7 +1419,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 75, y: -165}
-  m_SizeDelta: {x: 100, y: 50}
+  m_SizeDelta: {x: 110, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &637667242
 MonoBehaviour:
@@ -1537,7 +1552,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 75, y: -165}
-  m_SizeDelta: {x: 100, y: 50}
+  m_SizeDelta: {x: 110, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &706360974
 MonoBehaviour:
@@ -2342,7 +2357,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0666fcaf02d23bc4b84414a05e0cb9d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  itemID: gun2
+  item: {fileID: 9145663984316684277, guid: 6d60eaf3d3e3ec349a28f4d4373fa49b, type: 3}
+  price: 300
   buyButton: {fileID: 637667242}
   buttonText: {fileID: 505859726}
 --- !u!114 &1283417417
@@ -2429,51 +2445,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283417414}
   m_CullTransparentMesh: 1
---- !u!1 &1338032415
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1338032417}
-  - component: {fileID: 1338032416}
-  m_Layer: 0
-  m_Name: XPManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1338032416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338032415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36bb8e6ed53289a469497bd3e8950afa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::XPDisplay
-  xpText: {fileID: 384444246}
---- !u!4 &1338032417
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338032415}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 154.9803, y: 1011.96234, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1358504516
 GameObject:
   m_ObjectHideFlags: 0
@@ -2586,7 +2557,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 75, y: -165}
-  m_SizeDelta: {x: 100, y: 50}
+  m_SizeDelta: {x: 110, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1376580758
 MonoBehaviour:
@@ -2719,7 +2690,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 75, y: -165}
-  m_SizeDelta: {x: 100, y: 50}
+  m_SizeDelta: {x: 110, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1471018536
 MonoBehaviour:
@@ -3155,7 +3126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0666fcaf02d23bc4b84414a05e0cb9d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  itemID: gun1
+  item: {fileID: 435902436014110157, guid: 59bf5768c2a19de4aa87ce5d2727537e, type: 3}
+  price: 150
   buyButton: {fileID: 1376580758}
   buttonText: {fileID: 1686470893}
 --- !u!114 &1738221643
@@ -3429,7 +3401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0666fcaf02d23bc4b84414a05e0cb9d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
-  itemID: bomb
+  item: {fileID: 2435739475900343659, guid: d23833971ac4cfd4b9b73102a58d1738, type: 3}
+  price: 50
   buyButton: {fileID: 1471018536}
   buttonText: {fileID: 746064757}
 --- !u!114 &1927901236
@@ -3735,4 +3708,3 @@ SceneRoots:
   - {fileID: 1065134873}
   - {fileID: 343289717}
   - {fileID: 869997226}
-  - {fileID: 1338032417}

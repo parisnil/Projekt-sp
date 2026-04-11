@@ -1,7 +1,7 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-public class XPDisplay : MonoBehaviour
+public class MenuXP : MonoBehaviour
 {
     public TMP_Text xpText;
 
@@ -11,4 +11,3 @@ public class XPDisplay : MonoBehaviour
         xpText.text = "EXP: " + xp;
     }
 }
-
