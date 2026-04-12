@@ -11,6 +11,7 @@ public class PlayerLife : MonoBehaviour
     private bool canTakeDamage = true;
     private bool isDead = false;
     public DeathScreenUI deathUI;
+    public AudioClip deathSound;
 
     void Start()
     {
@@ -52,6 +53,13 @@ public class PlayerLife : MonoBehaviour
 
     void Die()
     {
+        MusicManager.instance?.StopMusic();
+
+        if (deathSound != null)
+        {
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        }
+
         isDead = true;
 
         PlayerExperience xp = FindFirstObjectByType<PlayerExperience>();

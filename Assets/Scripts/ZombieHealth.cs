@@ -4,6 +4,7 @@ public class ZombieHealth : MonoBehaviour
 {
     public int maxHP = 3;
     private int currentHP;
+    public AudioClip deathSound;
 
     [Header("Drop")]
     public GameObject expPrefab;
@@ -24,6 +25,11 @@ public class ZombieHealth : MonoBehaviour
 
     void Die()
     {
+        if (deathSound != null)
+        {
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        }
+
         if (expPrefab != null)
         {
             for (int i = 0; i < expPerZombie; i++)

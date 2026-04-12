@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     public ZombieSpawnManager spawnManager;
     public GameObject upgradePanel;
+    public AudioClip winSound;
 
     private bool waitingForWave = false;
 
@@ -41,17 +42,18 @@ public class GameManager : MonoBehaviour
     {
         if (waitingForWave) return;
 
-        if (currentLevel > maxWaves)
-        {
-            WinGame();
-            return;
-        }
-
         StartCoroutine(WaveRoutine());
     }
 
     void WinGame()
     {
+        MusicManager.instance?.StopMusic();
+
+        if (winSound != null)
+        {
+            AudioSource.PlayClipAtPoint(winSound, Camera.main.transform.position);
+        }
+
         Debug.Log("YOU WIN!");
 
         FindFirstObjectByType<VictoryScreenUI>()?.Show();
@@ -63,6 +65,15 @@ public class GameManager : MonoBehaviour
 
         spawnManager.StopAllCoroutines();
 
+        currentLevel++;
+
+        if (currentLevel > maxWaves)
+        {
+            waitingForWave = false;
+            WinGame();
+            yield break;
+        }
+
         if (upgradePanel != null)
             upgradePanel.SetActive(true);
 
@@ -73,9 +84,7 @@ public class GameManager : MonoBehaviour
 
         FindFirstObjectByType<UpgradeManager>()?.ResetChoices();
 
-        currentLevel++;
         zombiesToNextWave = 20;
-
         FindFirstObjectByType<SpriteCounter>()?.ResetCount(zombiesToNextWave);
 
         waitingForWave = false;

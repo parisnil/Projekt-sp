@@ -196,8 +196,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieHealth
   maxHP: 3
-  expPrefab: {fileID: 896288821845894611, guid: 3e617e717593f264a8a54dd27adf88e8, type: 3}
-  expPerZombie: 3
+  deathSound: {fileID: 8300000, guid: 291608b8d286e2a4580ff36324455ce2, type: 3}
+  expPrefab: {fileID: 8772478784547399891, guid: 5aeaa2c409dad73418d723f953c17f0e, type: 3}
+  expPerZombie: 2
   spawnRadius: 0.5
 --- !u!95 &7579841453960151804
 Animator:

@@ -5,6 +5,8 @@ public class GunController : MonoBehaviour
     [Header("Setup")]
     public Transform firePoint;
     public GameObject bulletPrefab;
+    public AudioSource audioSource;
+    public AudioClip shootSound;
 
     [Header("Stats")]
     public float shootInterval = 0.4f;
@@ -47,6 +49,13 @@ public class GunController : MonoBehaviour
     void Shoot()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+        if (audioSource != null && shootSound != null)
+        {
+            Debug.Log("SHOOT CALLED");
+
+            audioSource.PlayOneShot(shootSound);
+        }
 
         Bullet b = bullet.GetComponent<Bullet>();
         if (b != null)
