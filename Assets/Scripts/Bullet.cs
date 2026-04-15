@@ -17,21 +17,25 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         rb.linearVelocity = transform.right * speed;
-
         Destroy(gameObject, lifeTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Zombie"))
-        {
-            ZombieHealth zombie = other.GetComponent<ZombieHealth>();
-            if (zombie != null)
-            {
-                zombie.TakeDamage(damage);
-            }
+        if (!other.CompareTag("Zombie")) return;
 
-            Destroy(gameObject);
+        ZombieHealth zombie = other.GetComponent<ZombieHealth>();
+        if (zombie != null)
+        {
+            zombie.TakeDamage(damage);
         }
+
+        BossAI boss = other.GetComponentInParent<BossAI>();
+        if (boss != null)
+        {
+            boss.TakeDamage(damage);
+        }
+
+        Destroy(gameObject);
     }
 }

@@ -1141,6 +1141,37 @@ Transform:
   - {fileID: 1313587771}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &595884526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 595884527}
+  m_Layer: 0
+  m_Name: BossSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &595884527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595884526}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.47, y: 3.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &618519283
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,6 +1208,8 @@ MonoBehaviour:
   spawnManager: {fileID: 1582599438}
   upgradePanel: {fileID: 1304701213}
   winSound: {fileID: 8300000, guid: 2c4bc183a5df5aa4baf7c4fcf236a2de, type: 3}
+  bossPrefab: {fileID: 6575735375040726748, guid: 15cd4de257a628f4d926567c9209bf36, type: 3}
+  bossSpawnPoint: {fileID: 595884527}
 --- !u!4 &618519285
 Transform:
   m_ObjectHideFlags: 0
@@ -57014,3 +57047,4 @@ SceneRoots:
   - {fileID: 292646775}
   - {fileID: 928291519}
   - {fileID: 836985968}
+  - {fileID: 595884527}

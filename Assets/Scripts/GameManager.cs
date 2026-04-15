@@ -16,6 +16,11 @@ public class GameManager : MonoBehaviour
     public GameObject upgradePanel;
     public AudioClip winSound;
 
+    [Header("Boss")]
+    public GameObject bossPrefab;
+    public Transform bossSpawnPoint;
+    private bool bossSpawned = false;
+
     private bool waitingForWave = false;
 
     void Awake()
@@ -67,6 +72,19 @@ public class GameManager : MonoBehaviour
 
         currentLevel++;
 
+        if (currentLevel > maxWaves && !bossSpawned)
+        {
+            bossSpawned = true;
+
+            if (bossPrefab != null && bossSpawnPoint != null)
+                Instantiate(bossPrefab, bossSpawnPoint.position, Quaternion.identity);
+
+            Debug.Log("BOSS SPAWNED");
+
+            waitingForWave = false;
+            yield break;
+        }
+
         if (currentLevel > maxWaves)
         {
             waitingForWave = false;
@@ -90,5 +108,12 @@ public class GameManager : MonoBehaviour
         waitingForWave = false;
 
         StartWave();
+    }
+    public void BossKilled()
+    {
+        Debug.Log("BOSS DEAD - WIN");
+
+        MusicManager.instance?.StopMusic();
+        FindFirstObjectByType<VictoryScreenUI>()?.Show();
     }
 }
